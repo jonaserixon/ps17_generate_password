@@ -3,7 +3,7 @@
 include_once('./config/config.inc.php');
 include_once('./init.php');
 
-class ErixonResetPW
+class Hashing
 {
     /** @var array should contain hashing methods */
     private $hashMethods = array();
@@ -127,7 +127,7 @@ $javascript = '<script>
 echo $html . $javascript;
 
 if (Tools::getIsset('new_password') && strlen(Tools::getValue('new_password')) > 0 && Tools::getIsset('cookie_key') && strlen(Tools::getValue('cookie_key')) > 0) {
-    $reset_pw = new ErixonResetPW();
+    $reset_pw = new Hashing();
     $cookie_key = Tools::getIsset('cookie_key');
     $new_password = $reset_pw->hash(Tools::getValue('new_password'), $cookie_key);
 
@@ -138,12 +138,12 @@ if (Tools::getIsset('new_password') && strlen(Tools::getValue('new_password')) >
     echo $javascript;
 
 } else {
-    echo 'Missing parameter: ';
-    if (!Tools::getIsset('new_password')) {
+    echo 'Missing parameter(s): ';
+    if (!Tools::getIsset('new_password') || strlen(Tools::getValue('new_password')) < 1) {
         echo '<pre>new_password</pre>';
     }
 
-    if (!Tools::getIsset('cookie_key')) {
+    if (!Tools::getIsset('cookie_key') || strlen(Tools::getValue('cookie_key')) < 1) {
         echo '<pre>cookie_key</pre>';
     }
 }
